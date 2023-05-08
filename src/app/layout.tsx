@@ -1,4 +1,5 @@
 import { Zen_Kaku_Gothic_New } from "next/font/google";
+import { AuthProvider } from "./context/auth";
 import "./globals.css";
 import Footer from "./layout/footer";
 import Header from "./layout/header";
@@ -20,9 +21,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Zen+Old+Mincho&display=swap" rel="stylesheet"></link>
       </head>
       <body className={classNames(font.className, "text-indigo-950")}>
-        <Header />
-        {children}
-        <Footer />
+        <AuthProvider>
+          <Header />
+          {children}
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );
