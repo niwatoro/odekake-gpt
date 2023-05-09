@@ -20,11 +20,12 @@ const Page: NextPage = () => {
   useEffect(() => {
     if (user) {
       readTripsByUser(user.id).then((trips) => setTrips(trips));
+    } else {
+      router.push("/");
     }
   }, [user]);
 
   if (!user) {
-    router.push("/");
     return null;
   }
 
