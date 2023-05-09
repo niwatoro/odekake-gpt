@@ -1,11 +1,11 @@
 "use client";
 
+import UserMenu from "@/app/components/menu/user-menu";
+import { useAuth } from "@/app/context/auth";
+import { login } from "@/app/lib/auth";
 import { FlagIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { FC } from "react";
-import { useAuth } from "../context/auth";
-import { login } from "../lib/auth";
-import UserMenu from "../menu/user-menu";
 
 const Header: FC = () => {
   const user = useAuth();

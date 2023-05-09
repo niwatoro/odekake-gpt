@@ -1,11 +1,11 @@
 "use client";
 
+import { auth, db } from "@/app/firebase/client";
+import { User } from "@/app/types/user";
 import { onAuthStateChanged } from "@firebase/auth";
 import { doc } from "@firebase/firestore";
 import { getDoc, setDoc } from "firebase/firestore";
 import { ReactNode, createContext, useContext, useEffect, useState } from "react";
-import { auth, db } from "../firebase/client";
-import { User } from "../types/user";
 
 type UserContextType = User | null | undefined;
 

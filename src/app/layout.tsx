@@ -1,9 +1,9 @@
+import Footer from "@/app/components/layout/footer";
+import Header from "@/app/components/layout/header";
+import { AuthProvider } from "@/app/context/auth";
+import "@/app/globals.css";
+import { classNames } from "@/app/utils/class-names";
 import { Zen_Kaku_Gothic_New } from "next/font/google";
-import { AuthProvider } from "./context/auth";
-import "./globals.css";
-import Footer from "./layout/footer";
-import Header from "./layout/header";
-import { classNames } from "./utils/class-names";
 
 const font = Zen_Kaku_Gothic_New({ weight: "400", subsets: ["latin"] });
 
@@ -23,7 +23,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={classNames(font.className, "text-indigo-950")}>
         <AuthProvider>
           <Header />
-          {children}
+          <div className="w-full min-h-screen flex justify-center text-lg p-12">
+            <div className="w-[1000px] flex flex-col">{children}</div>
+          </div>
           <Footer />
         </AuthProvider>
       </body>

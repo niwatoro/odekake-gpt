@@ -1,11 +1,15 @@
 "use client";
 
+import { Card } from "@/app/components/card";
+import { Heading } from "@/app/components/heading";
+import { useAuth } from "@/app/context/auth";
+import { InputItem, InputItemProps } from "@/app/input-item";
+import { createTrip } from "@/app/lib/trip";
 import { ClockIcon } from "@heroicons/react/24/outline";
 import { MapPinIcon, SparklesIcon, UsersIcon } from "@heroicons/react/24/solid";
 import { NextPage } from "next";
 import Image from "next/image";
 import { useState } from "react";
-import { InputItem, InputItemProps } from "./input-item";
 
 type InputButtonProps = {
   imageUrl: string;
@@ -34,11 +38,13 @@ const InputButtons: InputButtonProps[] = [
   },
 ];
 
-const Home: NextPage = () => {
+const Page: NextPage = () => {
   const [period, setPeriod] = useState("");
-  const [place, setPlace] = useState("");
-  const [partner, setPartner] = useState("");
+  const [area, setArea] = useState("");
+  const [participants, setParticipants] = useState("");
   const [purpose, setPurpose] = useState("");
+
+  const user = useAuth();
 
   const InputItems: InputItemProps[] = [
     {
@@ -52,41 +58,43 @@ const Home: NextPage = () => {
       icon: <MapPinIcon />,
       label: "どこに行く？",
       placeholder: "関東辺り",
-      value: place,
-      setValue: setPlace,
+      value: area,
+      setValue: setArea,
     },
     {
       icon: <UsersIcon />,
       label: "誰と行く？",
       placeholder: "彼女",
-      value: partner,
-      setValue: setPartner,
+      value: participants,
+      setValue: setParticipants,
     },
     {
       icon: <SparklesIcon />,
       label: "何をしに？",
-      placeholder: "とりあえず街をぶらぶらする",
+      placeholder: "街をぶらぶらする",
       value: purpose,
       setValue: setPurpose,
     },
   ];
 
   return (
-    <div className="w-full flex justify-center text-lg p-12">
-      <div className="w-[1000px] flex flex-col">
-        <div className="mb-12 flex flex-col gap-y-4">
-          <div className="text-4xl font-bold">ふらっと出かけてみよう。</div>
-          <div>
-            最近出かけてますか？
-            <br />
-            ずっと行ってみたかったあそこ、今度行きませんか？
-          </div>
+    <>
+      <div className="mb-12 flex flex-col gap-y-4">
+        <Heading>ふらっと出かけてみよう。</Heading>
+        <div>
+          最近出かけてますか？
+          <br />
+          ずっと行ってみたかったあそこ、今度行きませんか？
         </div>
+      </div>
+      <Card>
         <form
-          onSubmit={(e) => {
+          className="flex flex-col gap-y-2"
+          onSubmit={async (e) => {
             e.preventDefault();
+            const trip = await createTrip({ period: period, area: area, participants: participants, purpose: purpose, uid: user?.id });
+            console.log(trip);
           }}
-          className="bg-indigo-50 p-10 flex flex-col gap-y-2 border-2 border-indigo-100"
         >
           {InputItems.map((item, index) => (
             <InputItem key={index} {...item} autofocus={index === 0} />
@@ -104,9 +112,9 @@ const Home: NextPage = () => {
             </button>
           </div>
         </form>
-      </div>
-    </div>
+      </Card>
+    </>
   );
 };
 
-export default Home;
+export default Page;
