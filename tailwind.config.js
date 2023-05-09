@@ -4,7 +4,6 @@ module.exports = {
   theme: {
     fontFamily: {
       logo: ["Playfair Display", "serif"],
-      heading: ["Zen Old Mincho", "serif"],
     },
   },
   plugins: [],

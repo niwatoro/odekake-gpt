@@ -27,6 +27,7 @@ export async function POST(request: Request) {
     const text = response.data.choices[0].message?.content!;
     return new Response(JSON.stringify({ itinerary: text, destinations: places.filter((place: Place) => text.includes(place.name)) }));
   } catch (e) {
+    console.error(e);
     return new Response(JSON.stringify({ error: e }));
   }
 }

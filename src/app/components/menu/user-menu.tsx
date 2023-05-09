@@ -3,7 +3,7 @@ import { useAuth } from "@/app/context/auth";
 import { logout } from "@/app/lib/auth";
 import { classNames } from "@/app/utils/class-names";
 import { Menu, Transition } from "@headlessui/react";
-import { ArrowRightOnRectangleIcon, Cog6ToothIcon, ComputerDesktopIcon, UserCircleIcon } from "@heroicons/react/24/solid";
+import { ArrowRightOnRectangleIcon, ComputerDesktopIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FC, Fragment, ReactNode } from "react";
@@ -24,11 +24,11 @@ const linkItems: LinkItemProps[] = [
     icon: <UserCircleIcon />,
     href: "/mypage",
   },
-  {
-    label: "設定",
-    icon: <Cog6ToothIcon />,
-    href: "/settings",
-  },
+  // {
+  //   label: "設定",
+  //   icon: <Cog6ToothIcon />,
+  //   href: "/settings",
+  // },
 ];
 
 type ListItemProps = {
