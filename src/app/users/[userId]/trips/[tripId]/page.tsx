@@ -1,9 +1,10 @@
 "use client";
 
+import { CopyToClipboardButton } from "@/app/components/copy-to-clipboard-button";
 import { Heading } from "@/app/components/heading";
 import { Loading } from "@/app/components/loading";
 import { readTrip } from "@/app/lib/trip";
-import { PageProps } from "@/app/types/page";
+import { PageProps } from "@/app/types/page-props";
 import { Trip } from "@/app/types/trip";
 import { nameTrip } from "@/app/utils/name-trip";
 import { NextPage } from "next";
@@ -36,7 +37,10 @@ const Page: NextPage<PageProps> = ({ params }) => {
 
   return (
     <div>
-      <Heading>{nameTrip(trip)}</Heading>
+      <div className="flex justify-between items-center">
+        <Heading>{nameTrip(trip)}</Heading>
+        <CopyToClipboardButton text={`https://odekake.niwatoro.com/users/${userId}/trips/${tripId}`} />
+      </div>
     </div>
   );
 };

@@ -9,6 +9,7 @@ import { ClockIcon } from "@heroicons/react/24/outline";
 import { MapPinIcon, SparklesIcon, UsersIcon } from "@heroicons/react/24/solid";
 import { NextPage } from "next";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 type InputButtonProps = {
@@ -45,6 +46,7 @@ const Page: NextPage = () => {
   const [purpose, setPurpose] = useState("");
 
   const user = useAuth();
+  const router = useRouter();
 
   const InputItems: InputItemProps[] = [
     {
@@ -92,8 +94,12 @@ const Page: NextPage = () => {
           className="flex flex-col gap-y-2"
           onSubmit={async (e) => {
             e.preventDefault();
-            const trip = await createTrip({ period: period, area: area, participants: participants, purpose: purpose, uid: user?.id });
-            console.log(trip);
+            if (!user) {
+              alert("お出かけを計画するにはログインが必要です");
+            } else {
+              const trip = await createTrip({ period: period, area: area, participants: participants, purpose: purpose, uid: user.id });
+              router.push(`/users/${user.id}/trips/${trip.id}`);
+            }
           }}
         >
           {InputItems.map((item, index) => (
