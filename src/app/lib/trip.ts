@@ -1,20 +1,20 @@
 import { collection, doc, getDoc, getDocs, updateDoc } from "firebase/firestore";
 import { db } from "../firebase/client";
-import { Tour } from "../types/tour";
+import { Trip } from "../types/trip";
 
-export const updateTour = (uid: string, id: string, data: Partial<Omit<Tour, "id" | "createdAt">>): Promise<void> => {
-  const ref = doc(db, `users/${uid}/tours/${id}`);
+export const updateTrip = (uid: string, id: string, data: Partial<Omit<Trip, "id" | "createdAt">>): Promise<void> => {
+  const ref = doc(db, `users/${uid}/trips/${id}`);
   return updateDoc(ref, data);
 };
 
-export const readToursByUser = async (uid: string): Promise<Tour[]> => {
-  const ref = collection(db, `users/${uid}/tours`);
+export const readTripsByUser = async (uid: string): Promise<Trip[]> => {
+  const ref = collection(db, `users/${uid}/trips`);
   return getDocs(ref).then((snapshot) => {
     const data = snapshot.docs.map((doc) => {
       return {
         id: doc.id,
         ...doc.data(),
-      } as Tour;
+      } as Trip;
     });
     if (data) {
       return data;
@@ -24,15 +24,15 @@ export const readToursByUser = async (uid: string): Promise<Tour[]> => {
   });
 };
 
-export const readTourByUser = async (uid: string, id: string): Promise<Tour | null> => {
-  const ref = doc(db, `users/${uid}/tours/${id}`);
+export const readTripByUser = async (uid: string, id: string): Promise<Trip | null> => {
+  const ref = doc(db, `users/${uid}/trips/${id}`);
   return getDoc(ref).then((snapshot) => {
     const data = snapshot.data();
     if (data) {
       return {
         id: snapshot.id,
         ...data,
-      } as Tour;
+      } as Trip;
     }
     return null;
   });
