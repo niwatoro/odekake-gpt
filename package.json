@@ -19,7 +19,7 @@
     "encoding": "^0.1.13",
     "firebase": "^9.21.0",
     "firebase-admin": "^11.8.0",
-    "lru-cache": "^9.1.1",
+    "lru-cache": "https://registry.npmjs.org/lru-cache/-/lru-cache-4.0.2.tgz",
     "next": "13.4.1",
     "openai": "^3.2.1",
     "postcss": "8.4.23",
