@@ -36,7 +36,7 @@ const Page: NextPage = () => {
         <div>どうです、本当に行っちゃいません？</div>
       </div>
       <Card>
-        <ul className="list-disc pl-5">
+        <ul className="list-disc pl-3 lg:pl-5">
           {trips.length > 0 ? (
             trips.map((trip, index) => {
               const creationDate = new Date(trip.createdAt);

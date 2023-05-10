@@ -10,7 +10,7 @@ export const DestionationGallery: FC<DestionationGalleryProps> = ({ destinations
   return (
     <div className="flex flex-wrap">
       {destinations.map((d, j) => (
-        <Link target="__blank" href={d?.url ?? `https://www.google.com/search?q=${d.name}`} key={j} className="w-48 h-48 border-4 border-indigo-600 mr-1 mb-1 rounded-lg relative overflow-hidden hover:opacity-50">
+        <Link target="__blank" href={d?.url ?? `https://www.google.com/search?q=${d.name}`} key={j} className="md:w-48 md:h-48 w-40 h-40 border-4 border-indigo-600 mr-1 mb-1 rounded-lg relative overflow-hidden hover:opacity-50">
           <div className="absolute w-48 bottom-0 text-sm p-1 pr-2 text-white bg-indigo-600/50">{d.name}</div>
           <BackgroundPhoto photoURL={d.thumbnail} name={d.name} />
         </Link>

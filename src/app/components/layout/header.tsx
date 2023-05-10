@@ -11,8 +11,8 @@ const Header: FC = () => {
   const user = useAuth();
 
   return (
-    <header className="w-full h-20 px-12 flex justify-center items-center bg-indigo-950 text-white">
-      <div className="w-[1000px] flex items-center justify-between">
+    <header className="w-full h-20 px-6 lg:px-12 flex justify-center items-center bg-indigo-950 text-white">
+      <div className="lg:w-[1000px] w-full flex items-center justify-between">
         <Link href={"/"} className="flex gap-x-2 items-end hover:underline">
           <FlagIcon className="h-6 w-6" />
           <div className="font-logo text-xl">OdekakeGPT</div>

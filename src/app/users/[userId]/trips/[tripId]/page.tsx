@@ -78,7 +78,9 @@ const Page: NextPage<PageProps> = ({ params }) => {
     <div className="flex flex-col gap-y-12">
       <div className="flex justify-between items-center">
         <Heading>{nameTrip(trip)}</Heading>
-        <CopyToClipboardButton text={`https://odekake.niwatoro.com/users/${userId}/trips/${tripId}`} />
+        <div className="w-8 h-8">
+          <CopyToClipboardButton text={`https://odekake.niwatoro.com/users/${userId}/trips/${tripId}`} />
+        </div>
       </div>
       <div className="flex flex-col gap-y-8">
         {trip.itinerary.split("\n\n").map((p, i) => {

@@ -23,8 +23,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={classNames(font.className, "text-indigo-950")}>
         <AuthProvider>
           <Header />
-          <div className="w-full min-h-screen flex justify-center text-lg p-12">
-            <div className="w-[1000px] flex flex-col">{children}</div>
+          <div className="w-full min-h-screen flex justify-center text-lg py-12 px-6 lg:px-12">
+            <div className="lg:w-[1000px] flex flex-col">{children}</div>
           </div>
           <Footer />
         </AuthProvider>

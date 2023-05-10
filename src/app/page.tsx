@@ -41,12 +41,17 @@ const InputButtons: InputButtonProps[] = [
 ];
 
 const calculateProgress = (prev: number): number => {
-  if (prev === 100) {
-    return 0;
-  } else if ((prev < 25 && prev + 1 >= 25) || (prev < 50 && prev + 1 >= 50) || (prev < 75 && prev + 1 >= 75)) {
-    return prev;
-  } else {
-    return prev + 1;
+  switch (prev) {
+    case 100:
+      return 0;
+    case 24:
+      return prev;
+    case 49:
+      return prev;
+    case 74:
+      return prev;
+    default:
+      return prev + 1;
   }
 };
 
@@ -128,12 +133,14 @@ const Page: NextPage = () => {
             }
           }}
         >
-          {InputItems.map((item, index) => (
-            <InputItem key={index} {...item} autofocus={index === 0} />
-          ))}
-          <div className="ml-40 mt-1 flex-wrap">
+          <div className="flex flex-col gap-y-4 lg:gap-y-2">
+            {InputItems.map((item, index) => (
+              <InputItem key={index} {...item} autofocus={index === 0} />
+            ))}
+          </div>
+          <div className="lg:ml-40 mt-1 flex-wrap">
             {InputButtons.map((button, index) => (
-              <button type="button" key={index} className="w-32 h-32 mr-1 mb-1 rounded-lg border-indigo-600 bg-white p-1 border-4 hover:opacity-50" onClick={() => setPurpose(button.inputValue)}>
+              <button type="button" key={index} className="lg:w-32 lg:h-32 w-24 h-24 mr-1 mb-1 rounded-lg border-indigo-600 bg-white p-1 border-4 hover:opacity-50" onClick={() => setPurpose(button.inputValue)}>
                 <Image className="w-full h-full" src={button.imageUrl} alt="icon" width={99} height={99} />
               </button>
             ))}
