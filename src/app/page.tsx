@@ -2,9 +2,9 @@
 
 import { Card } from "@/app/components/card";
 import { Heading } from "@/app/components/heading";
+import { InputItem, InputItemProps } from "@/app/components/input-item";
 import { LoadingDialog } from "@/app/components/loading-dialog";
 import { useAuth } from "@/app/context/auth";
-import { InputItem, InputItemProps } from "@/app/input-item";
 import { createTrip } from "@/app/lib/trip";
 import { ClockIcon } from "@heroicons/react/24/outline";
 import { MapPinIcon, SparklesIcon, UsersIcon } from "@heroicons/react/24/solid";

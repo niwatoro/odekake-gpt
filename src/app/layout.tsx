@@ -1,8 +1,8 @@
 import Footer from "@/app/components/layout/footer";
+import { GoogleAnalytics } from "@/app/components/layout/google-analytics";
 import Header from "@/app/components/layout/header";
 import { AuthProvider } from "@/app/context/auth";
 import "@/app/globals.css";
-import { GoogleAnalytics } from "@/app/google-analytics";
 import { classNames } from "@/app/utils/class-names";
 import { Zen_Kaku_Gothic_New } from "next/font/google";
 
