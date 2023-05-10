@@ -19,7 +19,7 @@ const Header: FC = () => {
         </Link>
         {user === null ? (
           <button className="text-lg hover:underline" onClick={login}>
-            ログイン
+            ログイン/新規登録
           </button>
         ) : (
           <UserMenu />
