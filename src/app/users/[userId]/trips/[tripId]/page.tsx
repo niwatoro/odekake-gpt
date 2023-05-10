@@ -87,8 +87,12 @@ const Page: NextPage<PageProps> = ({ params }) => {
               <div key={i} className="flex flex-col gap-y-4">
                 <ItineraryText text={p} />
                 <DestionationGallery destinations={destinationsByDate[i]} />
-                <div className="font-bold text-xl">ホテル</div>
-                <HotelCard hotels={hotelsByDate[i]} />
+                {destinationsByDate[i].length > 0 && (
+                  <>
+                    <div className="font-bold text-xl">{destinationsByDate[i][destinationsByDate[i].length - 1].name}周辺のホテル</div>
+                    <HotelCard hotels={hotelsByDate[i]} />
+                  </>
+                )}
               </div>
             )
         )}

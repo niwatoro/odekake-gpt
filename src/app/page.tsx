@@ -133,7 +133,7 @@ const Page: NextPage = () => {
           ))}
           <div className="ml-40 mt-1 flex-wrap">
             {InputButtons.map((button, index) => (
-              <button type="button" key={index} className="w-32 h-32 mr-1 mb-1 rounded-lg border-indigo-600 p-1 border-4 hover:opacity-50" onClick={() => setPurpose(button.inputValue)}>
+              <button type="button" key={index} className="w-32 h-32 mr-1 mb-1 rounded-lg border-indigo-600 bg-white p-1 border-4 hover:opacity-50" onClick={() => setPurpose(button.inputValue)}>
                 <Image className="w-full h-full" src={button.imageUrl} alt="icon" width={99} height={99} />
               </button>
             ))}
