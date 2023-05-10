@@ -2,6 +2,7 @@ import Footer from "@/app/components/layout/footer";
 import Header from "@/app/components/layout/header";
 import { AuthProvider } from "@/app/context/auth";
 import "@/app/globals.css";
+import { GoogleAnalytics } from "@/app/google-analytics";
 import { classNames } from "@/app/utils/class-names";
 import { Zen_Kaku_Gothic_New } from "next/font/google";
 
@@ -20,6 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Zen+Old+Mincho&display=swap" rel="stylesheet"></link>
       </head>
+      <GoogleAnalytics />
       <body className={classNames(font.className, "text-indigo-950")}>
         <AuthProvider>
           <Header />
