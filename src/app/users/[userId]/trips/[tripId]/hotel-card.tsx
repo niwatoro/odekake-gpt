@@ -13,7 +13,7 @@ type Props = {
 export const HotelCard: FC<Props> = ({ hotels }) => {
   return (
     <Card className="flex flex-wrap">
-      {hotels === undefined ? (
+      {hotels === undefined || hotels === null ? (
         <Loading />
       ) : (
         hotels.map((hotel, index) => (
