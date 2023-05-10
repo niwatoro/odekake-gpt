@@ -15,7 +15,7 @@ export const InputItem: FC<InputItemProps> = ({ icon, label, placeholder, value,
         <div className="flex h-6 w-6">{icon}</div>
         {label}
       </div>
-      <input required autoFocus={autofocus} className="bg-transparent border-b-2 outline-none border-indigo-950 w-32 md:w-full md:flex-1" placeholder={placeholder} onChange={(e) => setValue(e.target.value)} value={value} />
+      <input required autoFocus={autofocus} className="bg-transparent border-b-2 outline-none border-indigo-950 w-64 md:w-full md:flex-1" placeholder={placeholder} onChange={(e) => setValue(e.target.value)} value={value} />
     </div>
   );
 };
