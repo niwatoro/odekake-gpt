@@ -26,7 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <AuthProvider>
           <Header />
           <div className="w-full min-h-screen flex justify-center text-lg">
-            <div className="lg:w-[1000px] flex flex-col py-12 px-6 lg:px-12">{children}</div>
+            <div className="lg:w-[1000px] flex flex-col py-12 px-6 lg:px-0">{children}</div>
           </div>
           <Footer />
         </AuthProvider>
