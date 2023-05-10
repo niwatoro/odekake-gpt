@@ -9,6 +9,7 @@ export type Hotel = {
   hotelImageUrl: string;
   roomImageUrl: string;
   minCharge: number | null;
+  review: string | null;
   reviewAverage: number | null;
   reviewCount: number | null;
 };

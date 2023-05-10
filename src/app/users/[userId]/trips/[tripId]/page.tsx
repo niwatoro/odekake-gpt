@@ -90,7 +90,7 @@ const Page: NextPage<PageProps> = ({ params }) => {
                 <DestionationGallery destinations={destinationsByDate[i]} />
                 {destinationsByDate[i].length > 0 && (
                   <>
-                    <div className="font-bold text-xl">{lastDestination.name}周辺のホテル</div>
+                    <div className="font-bold text-xl">{lastDestination.name}から1kmのホテル</div>
                     <HotelCard hotels={hotelsByDate[i]} lastDestination={lastDestination} />
                   </>
                 )}
