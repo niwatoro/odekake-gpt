@@ -81,21 +81,23 @@ const Page: NextPage<PageProps> = ({ params }) => {
         <CopyToClipboardButton text={`https://odekake.niwatoro.com/users/${userId}/trips/${tripId}`} />
       </div>
       <div className="flex flex-col gap-y-8">
-        {trip.itinerary.split("\n\n").map(
-          (p, i) =>
+        {trip.itinerary.split("\n\n").map((p, i) => {
+          const lastDestination = destinationsByDate[i][destinationsByDate[i].length - 1];
+          return (
             p.includes("日目") && (
               <div key={i} className="flex flex-col gap-y-4">
                 <ItineraryText text={p} />
                 <DestionationGallery destinations={destinationsByDate[i]} />
                 {destinationsByDate[i].length > 0 && (
                   <>
-                    <div className="font-bold text-xl">{destinationsByDate[i][destinationsByDate[i].length - 1].name}周辺のホテル</div>
-                    <HotelCard hotels={hotelsByDate[i]} />
+                    <div className="font-bold text-xl">{lastDestination.name}周辺のホテル</div>
+                    <HotelCard hotels={hotelsByDate[i]} lastDestination={lastDestination} />
                   </>
                 )}
               </div>
             )
-        )}
+          );
+        })}
       </div>
     </div>
   );

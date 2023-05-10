@@ -120,7 +120,7 @@ const Page: NextPage = () => {
             e.preventDefault();
             setIsOpen(true);
             if (!user) {
-              alert("お出かけを計画するにはログインが必要です");
+              alert("お出かけを計画するにはアカウントが必要です");
               setIsOpen(false);
             } else {
               const trip = await createTrip({ period: period, area: area, participants: participants, purpose: purpose, uid: user.id, setProgress: [() => setProgress(25), () => setProgress(50), () => setProgress(75)] });
