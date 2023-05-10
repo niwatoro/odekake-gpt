@@ -9,11 +9,12 @@ import { PageProps } from "@/app/types/page-props";
 import { Place } from "@/app/types/place";
 import { Trip } from "@/app/types/trip";
 import { nameTrip } from "@/app/utils/name-trip";
+import { EyeSlashIcon } from "@heroicons/react/24/solid";
 import { NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 
 const Page: NextPage<PageProps> = ({ params }) => {
   const router = useRouter();
@@ -21,7 +22,7 @@ const Page: NextPage<PageProps> = ({ params }) => {
   const { userId, tripId } = params;
   const [trip, setTrip] = useState<Trip>();
   const [destinationsByDate, setDestinationsByDate] = useState<Place[][]>([]);
-  const [photos, setPhotos] = useState<{ [key: string]: Blob }>({});
+  const [photos, setPhotos] = useState<{ [key: string]: Blob | null }>({});
 
   useEffect(() => {
     if (userId !== undefined || tripId !== undefined) {
@@ -38,7 +39,7 @@ const Page: NextPage<PageProps> = ({ params }) => {
 
           setTrip(trip);
 
-          const _photos: { [key: string]: Blob } = {};
+          const _photos: { [key: string]: Blob | null } = {};
           for (const destination of trip.destinations) {
             const photo = await getPhoto(destination);
             _photos[destination.id] = photo;
@@ -63,24 +64,45 @@ const Page: NextPage<PageProps> = ({ params }) => {
         <CopyToClipboardButton text={`https://odekake.niwatoro.com/users/${userId}/trips/${tripId}`} />
       </div>
       <div className="flex flex-col gap-y-8">
-        {trip.itinerary.split("\n\n").map((p, i) => (
-          <div key={i} className="leading-6">
-            {p.split("\n").map((line, j) => (
-              <div key={j}>{line}</div>
-            ))}
-            <div className="flex flex-wrap mt-2">
-              {destinationsByDate[i].map((d, j) => (
-                <Link target="__blank" href={`https://www.google.com/search?q=${d.name}`} key={j} className="w-48 h-48 border-4 border-indigo-600 mr-1 mb-1 rounded-lg relative overflow-hidden hover:opacity-50">
-                  <div className="absolute w-48 bottom-0 text-sm p-1 pr-2 text-white bg-[rgba(79,69,228,0.5)]">{d.name}</div>
-                  {photos[d.id] ? <Image className="w-full h-full object-cover" src={URL.createObjectURL(photos[d.id])} alt={d.name} width={999} height={999} /> : <Loading />}
-                </Link>
-              ))}
-            </div>
-          </div>
-        ))}
+        {trip.itinerary.split("\n\n").map(
+          (p, i) =>
+            p.includes("日目") && (
+              <div key={i} className="leading-6">
+                {p.split("\n").map((line, j) => (
+                  <div key={j}>{line}</div>
+                ))}
+                <div className="flex flex-wrap mt-2">
+                  {destinationsByDate[i].map((d, j) => (
+                    <Link target="__blank" href={d?.url ?? `https://www.google.com/search?q=${d.name}`} key={j} className="w-48 h-48 border-4 border-indigo-600 mr-1 mb-1 rounded-lg relative overflow-hidden hover:opacity-50">
+                      <div className="absolute w-48 bottom-0 text-sm p-1 pr-2 text-white bg-indigo-600/50">{d.name}</div>
+                      <BackgroundPhoto photoData={photos[d.id]} name={d.name} />
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )
+        )}
       </div>
     </div>
   );
 };
 
 export default Page;
+
+type BackgroundPhotoProps = {
+  photoData: Blob | null | undefined;
+  name: string;
+};
+const BackgroundPhoto: FC<BackgroundPhotoProps> = ({ photoData, name }) => {
+  if (photoData === undefined) {
+    return <Loading />;
+  } else if (photoData === null) {
+    return (
+      <div className="w-full h-full flex justify-center items-center text-indigo-600">
+        <EyeSlashIcon className="w-16 h-16" />
+      </div>
+    );
+  } else {
+    return <Image className="w-full h-full object-cover" src={URL.createObjectURL(photoData)} alt={name} width={999} height={999} />;
+  }
+};

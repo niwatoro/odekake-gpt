@@ -2,6 +2,7 @@
 
 import { Card } from "@/app/components/card";
 import { Heading } from "@/app/components/heading";
+import { LoadingDialog } from "@/app/components/loading-dialog";
 import { useAuth } from "@/app/context/auth";
 import { InputItem, InputItemProps } from "@/app/input-item";
 import { createTrip } from "@/app/lib/trip";
@@ -10,7 +11,7 @@ import { MapPinIcon, SparklesIcon, UsersIcon } from "@heroicons/react/24/solid";
 import { NextPage } from "next";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type InputButtonProps = {
   imageUrl: string;
@@ -19,31 +20,44 @@ type InputButtonProps = {
 const InputButtons: InputButtonProps[] = [
   {
     imageUrl: "/waterfall.png",
-    inputValue: "大自然を満喫する",
+    inputValue: "自然",
   },
   {
     imageUrl: "/kayak.png",
-    inputValue: "アウトドア・アクティビティを楽しむ",
+    inputValue: "アウトドア",
   },
   {
     imageUrl: "/torii-gate.png",
-    inputValue: "伝統文化に触れる",
+    inputValue: "文化",
   },
   {
     imageUrl: "/ramen.png",
-    inputValue: "グルメを堪能する",
+    inputValue: "グルメ",
   },
   {
     imageUrl: "/onsen.png",
-    inputValue: "温泉でリラックスする",
+    inputValue: "温泉",
   },
 ];
+
+const calculateProgress = (prev: number): number => {
+  if (prev === 100) {
+    return 0;
+  } else if ((prev < 25 && prev + 1 >= 25) || (prev < 50 && prev + 1 >= 50) || (prev < 75 && prev + 1 >= 75)) {
+    return prev;
+  } else {
+    return prev + 1;
+  }
+};
 
 const Page: NextPage = () => {
   const [period, setPeriod] = useState("");
   const [area, setArea] = useState("");
   const [participants, setParticipants] = useState("");
   const [purpose, setPurpose] = useState("");
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   const user = useAuth();
   const router = useRouter();
@@ -59,7 +73,7 @@ const Page: NextPage = () => {
     {
       icon: <MapPinIcon />,
       label: "どこに行く？",
-      placeholder: "関東辺り",
+      placeholder: "関東周辺",
       value: area,
       setValue: setArea,
     },
@@ -72,15 +86,25 @@ const Page: NextPage = () => {
     },
     {
       icon: <SparklesIcon />,
-      label: "何をしに？",
-      placeholder: "街をぶらぶらする",
+      label: "何が楽しみ？",
+      placeholder: "ぶらぶら",
       value: purpose,
       setValue: setPurpose,
     },
   ];
 
+  useEffect(() => {
+    if (isOpen) {
+      const timer = setInterval(() => {
+        setProgress((prev) => calculateProgress(prev));
+      }, 200);
+      return () => clearInterval(timer);
+    }
+  }, [isOpen]);
+
   return (
     <>
+      <LoadingDialog isOpen={isOpen} progress={progress} />
       <div className="mb-12 flex flex-col gap-y-4">
         <Heading>ふらっと出かけてみよう。</Heading>
         <div>
@@ -94,10 +118,12 @@ const Page: NextPage = () => {
           className="flex flex-col gap-y-2"
           onSubmit={async (e) => {
             e.preventDefault();
+            setIsOpen(true);
             if (!user) {
               alert("お出かけを計画するにはログインが必要です");
+              setIsOpen(false);
             } else {
-              const trip = await createTrip({ period: period, area: area, participants: participants, purpose: purpose, uid: user.id });
+              const trip = await createTrip({ period: period, area: area, participants: participants, purpose: purpose, uid: user.id, setProgress: [() => setProgress(25), () => setProgress(50), () => setProgress(75)] });
               router.push(`/users/${user.id}/trips/${trip.id}`);
             }
           }}

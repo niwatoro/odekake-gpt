@@ -16,7 +16,7 @@ export async function POST(request: Request) {
       messages: [
         {
           role: "system",
-          content: 'As a travel agent, create a customized itinerary for the customer based on their desired area, participants, period, and purpose. Format the output as follows: "1日目\n午前：${午前の予定}"\n午後：${午後の予定}',
+          content: 'As a travel agent, create a customized itinerary for the customer based on their desired area, participants, period, and purpose. Strictly format the output as follows: "1日目\n午前：${午前の予定}"\n午後：${午後の予定}',
         },
         {
           role: "user",

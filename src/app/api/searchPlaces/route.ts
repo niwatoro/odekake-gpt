@@ -1,20 +1,28 @@
 import { Place } from "@/app/types/place";
-import { Language } from "@googlemaps/google-maps-services-js";
-import { textSearch } from "@googlemaps/google-maps-services-js/dist/places/textsearch";
 
+type ResultProps = {
+  formatted_address: string;
+  geometry: {
+    location: {
+      lat: number;
+      lng: number;
+    };
+  };
+  name: string;
+  photos: {
+    photo_reference: string;
+  }[];
+  place_id: string;
+};
 export async function POST(request: Request) {
   const { area, purpose } = await request.json();
 
   try {
-    const response = await textSearch({
-      params: {
-        query: `旅行スポット ${area} ${purpose}`,
-        key: process.env.GOOGLE_MAPS_API_KEY!,
-        language: Language.ja,
-      },
-    });
+    const response = await fetch(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=${area}で+${purpose}&key=${process.env.GOOGLE_MAPS_API_KEY!}&language=ja`);
 
-    const places: Place[] = response.data.results.map(function (result) {
+    const responseJson = await response.json();
+
+    const places: Place[] = responseJson.results.map((result: ResultProps) => {
       const place: Place = {
         id: result.place_id!,
         name: result.name!,

@@ -48,16 +48,28 @@ type CreateTripProps = {
   area: string;
   participants: string;
   purpose: string;
-  uid?: string;
+  uid: string;
+  setProgress?: (() => void)[];
 };
-export const createTrip = async ({ period, area, participants, purpose, uid }: CreateTripProps): Promise<Trip> => {
+const safeSetProgress = (setProgress: (() => void)[] | undefined, index: number) => {
+  if (setProgress && setProgress.length > index) {
+    setProgress[index]();
+  }
+};
+export const createTrip = async ({ period, area, participants, purpose, uid, setProgress }: CreateTripProps): Promise<Trip> => {
   const places = await getPlaces(area, purpose);
+  safeSetProgress(setProgress, 0);
+
   const itinerary = await generateItinerary({ places: places, area: area, purpose: purpose, period: period, participants: participants });
   if (itinerary.error) {
     throw new Error(itinerary.error);
   }
+  safeSetProgress(setProgress, 1);
 
+  const ref = collection(db, `users/${uid}/trips`);
+  const id = (await addDoc(ref, {})).id;
   const trip: Trip = {
+    id: id,
     period: period,
     area: area,
     participants: participants,
@@ -67,17 +79,8 @@ export const createTrip = async ({ period, area, participants, purpose, uid }: C
     itinerary: itinerary.itinerary,
     createdAt: Date.now(),
   };
+  safeSetProgress(setProgress, 2);
 
-  if (uid) {
-    const ref = collection(db, `users/${uid}/trips`);
-    const id = (await addDoc(ref, {})).id;
-    const tripWithId: Trip = {
-      id: id,
-      ...trip,
-    };
-    await updateTrip(uid, id, tripWithId);
-    return tripWithId;
-  }
-
+  await updateTrip(uid, id, trip);
   return trip;
 };
