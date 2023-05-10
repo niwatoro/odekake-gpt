@@ -1,6 +1,7 @@
 import { db } from "@/app/firebase/client";
 import { generateItinerary } from "@/app/lib/itinerary";
-import { getPlaces } from "@/app/lib/place";
+import { addPhoto, getPlaces } from "@/app/lib/place";
+import { Place } from "@/app/types/place";
 import { Trip } from "@/app/types/trip";
 import { addDoc, collection, doc, getDoc, getDocs, orderBy, query, updateDoc } from "firebase/firestore";
 
@@ -68,17 +69,19 @@ export const createTrip = async ({ period, area, participants, purpose, uid, set
 
   const ref = collection(db, `users/${uid}/trips`);
   const id = (await addDoc(ref, {})).id;
+  const destinations: Place[] = await Promise.all(itinerary.destinations.map(async (place: Place) => addPhoto(uid, id, place)));
   const trip: Trip = {
     id: id,
     period: period,
     area: area,
     participants: participants,
     purpose: purpose,
-    destinations: itinerary.destinations,
+    destinations: destinations,
     hotels: [],
     itinerary: itinerary.itinerary,
     createdAt: Date.now(),
   };
+  console.log(trip);
   safeSetProgress(setProgress, 2);
 
   await updateTrip(uid, id, trip);

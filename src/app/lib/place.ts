@@ -1,4 +1,6 @@
+import { storage } from "@/app/firebase/client";
 import { Place } from "@/app/types/place";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 export const getPlaces = async (area: string, purpose: string): Promise<Place[]> => {
   const response = await fetch("/api/searchPlaces", {
@@ -10,17 +12,37 @@ export const getPlaces = async (area: string, purpose: string): Promise<Place[]>
   return updatedPlaces;
 };
 
-export const getPhoto = async (place: Place): Promise<Blob | null> => {
-  if (place.photos !== undefined && place.photos.length > 0) {
-    const response = await fetch("/api/getPhoto", {
-      method: "POST",
-      body: JSON.stringify({ photo_preference: place.photos[0] }),
-    });
-    const data = await response.blob();
-    return data;
-  } else {
-    return null;
+export const getPhoto = async (photo_preference: string): Promise<Blob | null> => {
+  const response = await fetch("/api/getPhoto", {
+    method: "POST",
+    body: JSON.stringify({ photo_preference: photo_preference }),
+  });
+  const data = await response.blob();
+  return data;
+};
+
+export const uploadPhoto = async (photo: Blob, uid: string, tripId: string, place: Place): Promise<string> => {
+  const storageRef = ref(storage, `users/${uid}/trips/${tripId}/${place.id}`);
+  const snapshot = await uploadBytes(storageRef, photo);
+  const url = await getDownloadURL(snapshot.ref);
+  return url;
+};
+
+export const addPhoto = async (uid: string, tripId: string, place: Place): Promise<Place> => {
+  if (place.photoPrefrence === undefined || place.photoPrefrence === null) {
+    return place;
   }
+  const photo = await getPhoto(place.photoPrefrence);
+  if (photo === null) {
+    return place;
+  }
+
+  const url = await uploadPhoto(photo, uid, tripId, place);
+  const updatedPlace: Place = {
+    ...place,
+    thumbnail: url,
+  };
+  return updatedPlace;
 };
 
 export const addPlaceDetails = async (place: Place): Promise<Place> => {
@@ -31,8 +53,8 @@ export const addPlaceDetails = async (place: Place): Promise<Place> => {
   const data = await response.json();
   const updatedPlace: Place = {
     ...place,
-    url: data.url,
-    website: data.website,
+    url: data.url || null,
+    website: data.website || null,
   };
   return updatedPlace;
 };

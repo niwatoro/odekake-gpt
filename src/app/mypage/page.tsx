@@ -37,16 +37,20 @@ const Page: NextPage = () => {
       </div>
       <Card>
         <ul className="list-disc pl-5">
-          {trips.map((trip, index) => {
-            const creationDate = new Date(trip.createdAt);
-            return (
-              <li key={index}>
-                <Link className="hover:underline" key={index} href={`/users/${user.id}/trips/${trip.id}`}>
-                  {`${nameTrip(trip)} (${creationDate.getFullYear()}/${creationDate.getMonth() + 1}/${creationDate.getDate()})`}
-                </Link>
-              </li>
-            );
-          })}
+          {trips.length > 0 ? (
+            trips.map((trip, index) => {
+              const creationDate = new Date(trip.createdAt);
+              return (
+                <li key={index}>
+                  <Link className="hover:underline" key={index} href={`/users/${user.id}/trips/${trip.id}`}>
+                    {`${nameTrip(trip)} (${creationDate.getFullYear()}/${creationDate.getMonth() + 1}/${creationDate.getDate()})`}
+                  </Link>
+                </li>
+              );
+            })
+          ) : (
+            <div>まだお出かけを計画していません</div>
+          )}
         </ul>
       </Card>
     </div>

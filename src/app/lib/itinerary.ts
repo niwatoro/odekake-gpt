@@ -7,7 +7,7 @@ type Props = {
   period: string;
   participants: string;
 };
-export async function generateItinerary({ places, area, purpose, period, participants }: Props) {
+export const generateItinerary = async ({ places, area, purpose, period, participants }: Props) => {
   const response = await fetch("/api/planItinerary", {
     method: "POST",
     body: JSON.stringify({ places: places, area: area, purpose: purpose, period: period, participants: participants }),
@@ -15,4 +15,4 @@ export async function generateItinerary({ places, area, purpose, period, partici
   const data = await response.json();
   console.log(data);
   return data;
-}
+};

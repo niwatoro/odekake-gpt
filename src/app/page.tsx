@@ -19,24 +19,24 @@ type InputButtonProps = {
 };
 const InputButtons: InputButtonProps[] = [
   {
+    imageUrl: "/tower.png",
+    inputValue: "ぶらぶら観光",
+  },
+  {
     imageUrl: "/waterfall.png",
     inputValue: "自然",
-  },
-  {
-    imageUrl: "/kayak.png",
-    inputValue: "アウトドア",
-  },
-  {
-    imageUrl: "/torii-gate.png",
-    inputValue: "文化",
   },
   {
     imageUrl: "/ramen.png",
     inputValue: "グルメ",
   },
   {
-    imageUrl: "/onsen.png",
-    inputValue: "温泉",
+    imageUrl: "/torii-gate.png",
+    inputValue: "文化",
+  },
+  {
+    imageUrl: "/kayak.png",
+    inputValue: "アウトドア",
   },
 ];
 
@@ -87,7 +87,7 @@ const Page: NextPage = () => {
     {
       icon: <SparklesIcon />,
       label: "何が楽しみ？",
-      placeholder: "ぶらぶら",
+      placeholder: "ぶらぶら観光",
       value: purpose,
       setValue: setPurpose,
     },

@@ -4,5 +4,11 @@ export type Hotel = {
   latitude: number;
   longitude: number;
   address: string;
-  price: number;
+  url: string;
+  planListUrl: string;
+  hotelImageUrl: string;
+  roomImageUrl: string;
+  minCharge: number | null;
+  reviewAverage: number | null;
+  reviewCount: number | null;
 };

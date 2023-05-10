@@ -4,7 +4,8 @@ export type Place = {
   latitude: number;
   longitude: number;
   address: string;
-  photos: string[];
-  url?: string;
-  website?: string;
+  photoPrefrence: string | null;
+  thumbnail: string | null;
+  url: string | null;
+  website: string | null;
 };

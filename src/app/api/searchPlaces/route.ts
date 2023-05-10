@@ -29,7 +29,10 @@ export async function POST(request: Request) {
         latitude: result.geometry?.location.lat!,
         longitude: result.geometry?.location.lng!,
         address: result.formatted_address!,
-        photos: result.photos?.map((photo) => photo.photo_reference!)!,
+        photoPrefrence: result.photos?.[0]?.photo_reference,
+        thumbnail: null,
+        url: null,
+        website: null,
       };
       return place;
     });
