@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { FC } from "react";
 
-const Footer: FC = () => {
+export const Footer: FC = () => {
   return (
     <footer className="w-full flex justify-center bg-indigo-50 lg:px-12 px-6 py-8 border-t-2 border-t-indigo-100">
       <div className="lg:w-[1000px] w-full flex flex-col gap-y-1">
@@ -13,5 +13,3 @@ const Footer: FC = () => {
     </footer>
   );
 };
-
-export default Footer;

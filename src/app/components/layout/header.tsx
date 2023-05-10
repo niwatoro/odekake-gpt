@@ -7,7 +7,7 @@ import { FlagIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { FC } from "react";
 
-const Header: FC = () => {
+export const Header: FC = () => {
   const user = useAuth();
 
   return (
@@ -28,5 +28,3 @@ const Header: FC = () => {
     </header>
   );
 };
-
-export default Header;

@@ -30,8 +30,8 @@ export const HotelCard: FC<Props> = ({ hotels, lastDestination }) => {
                   <img className="md:w-1/2 h-64 w-full md:h-full object-cover" src={hotel.roomImageUrl ?? hotel.hotelImageUrl} />
                   <div className="md:w-1/2 py-2 px-3 md:flex md:flex-col md:justify-between">
                     <div className="flex flex-col gap-y-1">
-                      <div className="font-bold line-clamp-2">{ConvertHankakuToZenkaku(hotel.name)}</div>
-                      <div className="flex gap-x-2 text-sm">
+                      <div className="font-bold line-clamp-2 text-lg">{ConvertHankakuToZenkaku(hotel.name)}</div>
+                      <div className="flex gap-x-2">
                         <div>
                           {Array.from({ length: 5 }).map((_, i) => (
                             <span key={i} className={classNames(Math.round(hotel.reviewAverage ?? 0) > i ? "text-yellow-500" : "text-gray-500")}>

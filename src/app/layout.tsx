@@ -1,6 +1,6 @@
-import Footer from "@/app/components/layout/footer";
+import { Footer } from "@/app/components/layout/footer";
 import { GoogleAnalytics } from "@/app/components/layout/google-analytics";
-import Header from "@/app/components/layout/header";
+import { Header } from "@/app/components/layout/header";
 import { AuthProvider } from "@/app/context/auth";
 import "@/app/globals.css";
 import { classNames } from "@/app/utils/class-names";
@@ -25,8 +25,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={classNames(font.className, "text-indigo-950")}>
         <AuthProvider>
           <Header />
-          <div className="w-full min-h-screen flex justify-center text-lg py-12 px-6 lg:px-12">
-            <div className="lg:w-[1000px] flex flex-col">{children}</div>
+          <div className="w-full min-h-screen flex justify-center text-lg">
+            <div className="lg:w-[1000px] flex flex-col py-12 px-6 lg:px-12">{children}</div>
           </div>
           <Footer />
         </AuthProvider>

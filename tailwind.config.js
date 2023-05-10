@@ -6,5 +6,5 @@ module.exports = {
       logo: ["Playfair Display", "serif"],
     },
   },
-  plugins: [require("@tailwindcss/line-clamp")],
+  plugins: [],
 };
