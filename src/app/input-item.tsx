@@ -10,7 +10,7 @@ export type InputItemProps = {
 };
 export const InputItem: FC<InputItemProps> = ({ icon, label, placeholder, value, setValue, autofocus }) => {
   return (
-    <div className="flex flex-col lg:flex-row lg:items-center w-full">
+    <div className="flex flex-col lg:flex-row lg:items-center">
       <div className="flex items-end gap-x-2 w-40">
         <div className="flex h-6 w-6">{icon}</div>
         {label}
