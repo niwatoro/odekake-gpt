@@ -10,12 +10,14 @@ import { NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useLocale } from "../context/locale";
 
 const Page: NextPage = () => {
   const router = useRouter();
 
   const [trips, setTrips] = useState<Trip[]>([]);
   const user = useAuth();
+  const { t } = useLocale();
 
   useEffect(() => {
     if (user) {
@@ -32,8 +34,8 @@ const Page: NextPage = () => {
   return (
     <div className="flex flex-col">
       <div className="mb-12 flex flex-col gap-y-4">
-        <Heading>今まで作ったお出かけ計画</Heading>
-        <div>どうです、本当に行っちゃいません？</div>
+        <Heading>{t.MYPAGE_HEADING}</Heading>
+        <div>{t.MYPAGE_SUBHEADING}</div>
       </div>
       <Card>
         <ul className="list-disc pl-3 lg:pl-5">
@@ -49,7 +51,7 @@ const Page: NextPage = () => {
               );
             })
           ) : (
-            <div>まだお出かけを計画していません</div>
+            <div>{t.MYPAGE_NO_TRIPS}</div>
           )}
         </ul>
       </Card>

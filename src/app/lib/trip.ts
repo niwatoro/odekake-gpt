@@ -51,17 +51,18 @@ type CreateTripProps = {
   purpose: string;
   uid: string;
   setProgress?: (() => void)[];
+  locale: string;
 };
 const safeSetProgress = (setProgress: (() => void)[] | undefined, index: number) => {
   if (setProgress && setProgress.length > index) {
     setProgress[index]();
   }
 };
-export const createTrip = async ({ period, area, participants, purpose, uid, setProgress }: CreateTripProps): Promise<Trip> => {
-  const places = await getPlaces(area, purpose);
+export const createTrip = async ({ period, area, participants, purpose, uid, setProgress, locale }: CreateTripProps): Promise<Trip> => {
+  const places = await getPlaces(area, purpose, locale);
   safeSetProgress(setProgress, 0);
 
-  const itinerary = await generateItinerary({ places: places, area: area, purpose: purpose, period: period, participants: participants });
+  const itinerary = await generateItinerary({ places: places, area: area, purpose: purpose, period: period, participants: participants, locale: locale });
   if (itinerary.error) {
     throw new Error(itinerary.error);
   }

@@ -12,33 +12,12 @@ import { NextPage } from "next";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useLocale } from "./context/locale";
 
 type InputButtonProps = {
   imageUrl: string;
   inputValue: string;
 };
-const InputButtons: InputButtonProps[] = [
-  {
-    imageUrl: "/tower.png",
-    inputValue: "ぶらぶら観光",
-  },
-  {
-    imageUrl: "/waterfall.png",
-    inputValue: "自然",
-  },
-  {
-    imageUrl: "/ramen.png",
-    inputValue: "グルメ",
-  },
-  {
-    imageUrl: "/torii-gate.png",
-    inputValue: "文化",
-  },
-  {
-    imageUrl: "/kayak.png",
-    inputValue: "アウトドア",
-  },
-];
 
 const calculateProgress = (prev: number): number => {
   switch (prev) {
@@ -66,33 +45,57 @@ const Page: NextPage = () => {
 
   const user = useAuth();
   const router = useRouter();
+  const { t, locale } = useLocale();
+
+  const InputButtons: InputButtonProps[] = [
+    {
+      imageUrl: "/tower.png",
+      inputValue: t.INPUTVALUE_SIGHTSEEING,
+    },
+    {
+      imageUrl: "/waterfall.png",
+      inputValue: t.INPUTVALUE_NATURE,
+    },
+    {
+      imageUrl: "/ramen.png",
+      inputValue: t.INPUTVALUE_FOOD,
+    },
+    {
+      imageUrl: "/torii-gate.png",
+      inputValue: t.INPUTVALUE_CULTURE,
+    },
+    {
+      imageUrl: "/kayak.png",
+      inputValue: t.INPUTVALUE_ACTIVITY,
+    },
+  ];
 
   const InputItems: InputItemProps[] = [
     {
       icon: <ClockIcon />,
-      label: "どれくらい？",
-      placeholder: "3日間",
+      label: t.INPUTITEM_PERIOD,
+      placeholder: t.HOME_THREE_DAYS,
       value: period,
       setValue: setPeriod,
     },
     {
       icon: <MapPinIcon />,
-      label: "どこに行く？",
-      placeholder: "関東周辺",
+      label: t.INPUTITEM_AREA,
+      placeholder: t.HOME_AROUND_KANTO,
       value: area,
       setValue: setArea,
     },
     {
       icon: <UsersIcon />,
-      label: "誰と行く？",
-      placeholder: "彼女",
+      label: t.INPUTITEM_PARTICIPANTS,
+      placeholder: t.HOME_WITH_GIRLFRIEND,
       value: participants,
       setValue: setParticipants,
     },
     {
       icon: <SparklesIcon />,
-      label: "何が楽しみ？",
-      placeholder: "ぶらぶら観光",
+      label: t.INPUTITEM_PURPOSE,
+      placeholder: t.HOME_SIGHTSEEING,
       value: purpose,
       setValue: setPurpose,
     },
@@ -111,11 +114,11 @@ const Page: NextPage = () => {
     <>
       <LoadingDialog isOpen={isOpen} progress={progress} />
       <div className="mb-12 flex flex-col gap-y-4">
-        <Heading>ふらっと出かけてみよう。</Heading>
+        <Heading>{t.HOME_HEADING}</Heading>
         <div>
-          最近出かけてますか？
+          {t.HOME_SUBHEADING_1}
           <br />
-          ずっと行ってみたかったあそこ、今度行きませんか？
+          {t.HOME_SUBHEADING_2}
         </div>
       </div>
       <Card>
@@ -125,10 +128,10 @@ const Page: NextPage = () => {
             e.preventDefault();
             setIsOpen(true);
             if (!user) {
-              alert("お出かけを計画するにはアカウントが必要です");
+              alert(t.HOME_YOU_NEED_ACCOUNT);
               setIsOpen(false);
             } else {
-              const trip = await createTrip({ period: period, area: area, participants: participants, purpose: purpose, uid: user.id, setProgress: [() => setProgress(25), () => setProgress(50), () => setProgress(75)] });
+              const trip = await createTrip({ period: period, area: area, participants: participants, purpose: purpose, uid: user.id, setProgress: [() => setProgress(25), () => setProgress(50), () => setProgress(75)], locale: locale });
               router.push(`/users/${user.id}/trips/${trip.id}`);
             }
           }}
@@ -147,7 +150,7 @@ const Page: NextPage = () => {
           </div>
           <div className="mt-4">
             <button type="submit" className="w-56 bg-indigo-950 text-white hover:opacity-50 rounded-md p-2">
-              お出かけを計画する
+              {t.HOME_PLAN_A_TRIP}
             </button>
           </div>
         </form>

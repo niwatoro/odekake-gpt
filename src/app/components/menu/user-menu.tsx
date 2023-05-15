@@ -1,5 +1,6 @@
 import Avatar from "@/app/components/menu/avatar";
 import { useAuth } from "@/app/context/auth";
+import { useLocale } from "@/app/context/locale";
 import { logout } from "@/app/lib/auth";
 import { classNames } from "@/app/utils/class-names";
 import { Menu, Transition } from "@headlessui/react";
@@ -13,23 +14,6 @@ type LinkItemProps = {
   icon: ReactNode;
   href: string;
 };
-const linkItems: LinkItemProps[] = [
-  {
-    label: "トップ",
-    icon: <ComputerDesktopIcon />,
-    href: "/",
-  },
-  {
-    label: "マイページ",
-    icon: <UserCircleIcon />,
-    href: "/mypage",
-  },
-  // {
-  //   label: "設定",
-  //   icon: <Cog6ToothIcon />,
-  //   href: "/settings",
-  // },
-];
 
 type ListItemProps = {
   active: boolean;
@@ -48,10 +32,24 @@ const ListItem: FC<ListItemProps> = ({ active, label, icon }) => {
 const UserMenu: FC = () => {
   const pathname = usePathname();
   const user = useAuth();
+  const { t } = useLocale();
 
   if (!user) {
     return null;
   }
+
+  const linkItems: LinkItemProps[] = [
+    {
+      label: t.USERMENU_HOME,
+      icon: <ComputerDesktopIcon />,
+      href: "/",
+    },
+    {
+      label: t.USERMENU_MYTRIPS,
+      icon: <UserCircleIcon />,
+      href: "/mypage",
+    },
+  ];
 
   return (
     <Menu as="div" className="relative">
@@ -78,7 +76,7 @@ const UserMenu: FC = () => {
             <Menu.Item>
               {({ active }) => (
                 <button className="w-full" onClick={logout}>
-                  <ListItem icon={<ArrowRightOnRectangleIcon />} label="ログアウト" active={active} />
+                  <ListItem icon={<ArrowRightOnRectangleIcon />} label={t.USERMENU_LOGIN} active={active} />
                 </button>
               )}
             </Menu.Item>

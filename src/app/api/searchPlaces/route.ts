@@ -15,10 +15,10 @@ type ResultProps = {
   place_id: string;
 };
 export async function POST(request: Request) {
-  const { area, purpose } = await request.json();
+  const { area, purpose, language } = await request.json();
 
   try {
-    const response = await fetch(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=${area}で+${purpose}&key=${process.env.GOOGLE_MAPS_API_KEY!}&language=ja`);
+    const response = await fetch(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=${area}で+${purpose}&key=${process.env.GOOGLE_MAPS_API_KEY!}&language=${language}`);
 
     const responseJson = await response.json();
 

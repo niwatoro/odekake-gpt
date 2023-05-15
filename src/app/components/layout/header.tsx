@@ -2,6 +2,7 @@
 
 import UserMenu from "@/app/components/menu/user-menu";
 import { useAuth } from "@/app/context/auth";
+import { useLocale } from "@/app/context/locale";
 import { login } from "@/app/lib/auth";
 import { FlagIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
@@ -9,6 +10,7 @@ import { FC } from "react";
 
 export const Header: FC = () => {
   const user = useAuth();
+  const { t } = useLocale();
 
   return (
     <header className="w-full h-20 px-6 lg:px-12 flex justify-center items-center bg-indigo-950 text-white">
@@ -19,7 +21,7 @@ export const Header: FC = () => {
         </Link>
         {user === null ? (
           <button className="text-lg hover:underline" onClick={login}>
-            ログイン/新規登録
+            {t.USERMENU_LOGIN}/{t.USERMENU_SIGNUP}
           </button>
         ) : (
           <UserMenu />

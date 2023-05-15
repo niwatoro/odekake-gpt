@@ -2,13 +2,13 @@ import { storage } from "@/app/firebase/client";
 import { Place } from "@/app/types/place";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
-export const getPlaces = async (area: string, purpose: string): Promise<Place[]> => {
+export const getPlaces = async (area: string, purpose: string, locale: string): Promise<Place[]> => {
   const response = await fetch("/api/searchPlaces", {
     method: "POST",
     body: JSON.stringify({ area: area, purpose: purpose }),
   });
   const places: Place[] = await response.json();
-  const updatedPlaces: Place[] = await Promise.all(places.map(async (place) => addPlaceDetails(place)));
+  const updatedPlaces: Place[] = await Promise.all(places.map(async (place) => addPlaceDetails(place, locale)));
   return updatedPlaces;
 };
 
@@ -45,10 +45,10 @@ export const addPhoto = async (uid: string, tripId: string, place: Place): Promi
   return updatedPlace;
 };
 
-export const addPlaceDetails = async (place: Place): Promise<Place> => {
+export const addPlaceDetails = async (place: Place, locale: string): Promise<Place> => {
   const response = await fetch("/api/lookUpPlaceDetails", {
     method: "POST",
-    body: JSON.stringify({ place_id: place.id }),
+    body: JSON.stringify({ place_id: place.id, language: locale }),
   });
   const data = await response.json();
   const updatedPlace: Place = {

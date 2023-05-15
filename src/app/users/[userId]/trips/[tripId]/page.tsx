@@ -11,7 +11,7 @@ import { Place } from "@/app/types/place";
 import { Trip } from "@/app/types/trip";
 import { nameTrip } from "@/app/utils/name-trip";
 import { NextPage } from "next";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { DestionationGallery } from "./destination-gallery";
 import { HotelCard } from "./hotel-card";
@@ -27,7 +27,7 @@ const getDestinationsByDate = (trip: Trip) => {
   return destinationsByDate;
 };
 
-const getHotelsByDate = async (destinationsByDate: Place[][]) => {
+const getHotelsByDate = async (destinationsByDate: Place[][], locale: string) => {
   const hotelsByDate: Hotel[][] = [];
   for (const destinations of destinationsByDate) {
     if (destinations.length < 1) {
@@ -36,7 +36,7 @@ const getHotelsByDate = async (destinationsByDate: Place[][]) => {
     }
 
     const lastDestination = destinations[destinations.length - 1];
-    const hotels = await getHotels(lastDestination.latitude, lastDestination.longitude);
+    const hotels = await getHotels(lastDestination.latitude, lastDestination.longitude, locale);
     hotelsByDate.push(hotels);
   }
   return hotelsByDate;
@@ -44,6 +44,7 @@ const getHotelsByDate = async (destinationsByDate: Place[][]) => {
 
 const Page: NextPage<PageProps> = ({ params }) => {
   const router = useRouter();
+  const { locale } = useParams();
 
   const { userId, tripId } = params;
   const [trip, setTrip] = useState<Trip>();
@@ -61,7 +62,7 @@ const Page: NextPage<PageProps> = ({ params }) => {
 
         setTrip(trip);
 
-        const _hotelsByDate = await getHotelsByDate(_destinationsByDate);
+        const _hotelsByDate = await getHotelsByDate(_destinationsByDate, locale);
         setHotelsByDate(_hotelsByDate);
       })();
     }
@@ -77,7 +78,7 @@ const Page: NextPage<PageProps> = ({ params }) => {
   return (
     <div className="flex flex-col gap-y-12">
       <div className="flex justify-between items-center">
-        <Heading>{nameTrip(trip)}</Heading>
+        <Heading>{nameTrip(trip, locale)}</Heading>
         <div className="w-8 h-8">
           <CopyToClipboardButton text={`https://odekake.niwatoro.com/users/${userId}/trips/${tripId}`} />
         </div>
@@ -86,7 +87,7 @@ const Page: NextPage<PageProps> = ({ params }) => {
         {trip.itinerary.split("\n\n").map((p, i) => {
           const lastDestination = destinationsByDate[i][destinationsByDate[i].length - 1];
           return (
-            p.includes("日目") && (
+            (p.includes("日目") || p.includes("Day")) && (
               <div key={i} className="flex flex-col gap-y-4">
                 <ItineraryText text={p} />
                 <DestionationGallery destinations={destinationsByDate[i]} />
