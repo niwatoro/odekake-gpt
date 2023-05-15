@@ -17,7 +17,7 @@ const Page: NextPage = () => {
 
   const [trips, setTrips] = useState<Trip[]>([]);
   const user = useAuth();
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
 
   useEffect(() => {
     if (user) {
@@ -45,7 +45,7 @@ const Page: NextPage = () => {
               return (
                 <li key={index}>
                   <Link className="hover:underline" key={index} href={`/users/${user.id}/trips/${trip.id}`}>
-                    {`${nameTrip(trip)} (${creationDate.getFullYear()}/${creationDate.getMonth() + 1}/${creationDate.getDate()})`}
+                    {`${nameTrip(trip, locale)} (${creationDate.getFullYear()}/${creationDate.getMonth() + 1}/${creationDate.getDate()})`}
                   </Link>
                 </li>
               );
